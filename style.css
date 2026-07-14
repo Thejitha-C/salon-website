@@ -22,7 +22,7 @@ body {
     color: var(--text-muted);
     font-family: 'Inter', sans-serif;
     line-height: 1.6;
-    overflow-x: hidden; /* Prevents side-scrolling glitches */
+    overflow-x: hidden;
 }
 
 h1, h2, h3, .logo, .btn {
@@ -41,7 +41,7 @@ nav {
     align-items: center;
     padding: 20px 50px;
     background: rgba(10, 10, 10, 0.95);
-    backdrop-filter: blur(10px); /* Adds a modern glass effect */
+    backdrop-filter: blur(10px);
     z-index: 1000;
     border-bottom: 1px solid #222;
 }
@@ -68,7 +68,6 @@ nav {
     transition: color 0.3s;
 }
 
-/* Animated underline for nav links */
 .nav-links a::after {
     content: '';
     position: absolute;
@@ -121,7 +120,6 @@ h1 {
     color: var(--accent);
 }
 
-/* Enhanced Button with Glow & Float */
 .btn {
     display: inline-block;
     padding: 15px 30px;
@@ -142,7 +140,6 @@ h1 {
     box-shadow: 0 10px 20px rgba(212, 111, 77, 0.3);
 }
 
-/* Info Bar at bottom of Hero */
 .info-bar {
     position: absolute;
     bottom: 0;
@@ -200,21 +197,18 @@ section {
 .grid-item {
     position: relative;
     overflow: hidden;
-    border-radius: 8px; /* Smooth edges */
+    border-radius: 8px;
 }
 
 .grid-item img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: grayscale(100%); 
-    transition: filter 0.5s ease, transform 0.5s ease;
+    transition: transform 0.5s ease; /* Grayscale removed */
 }
 
-/* Upgraded Hover Effect for Images */
 .grid-item:hover img {
-    filter: grayscale(0%); 
-    transform: scale(1.08) rotate(1deg); /* Slight zoom and tilt */
+    transform: scale(1.08) rotate(1deg);
 }
 
 .grid-overlay {
@@ -231,7 +225,6 @@ section {
     transition: padding-bottom 0.3s ease;
 }
 
-/* Makes text pop up when image is hovered */
 .grid-item:hover .grid-overlay {
     padding-bottom: 30px;
 }
@@ -285,35 +278,47 @@ section {
     color: var(--accent);
 }
 
-/* --- THE GALLERY FIX (Scrolling Carousel) --- */
-.gallery-grid {
-    display: flex; /* Changes it from a grid to a row */
-    overflow-x: auto; /* Allows horizontal scrolling */
-    scroll-snap-type: x mandatory; /* Snaps to images */
+/* --- MOTION PORTFOLIO SLIDER --- */
+.gallery-slider {
+    overflow: hidden;
+    width: 100%;
+    padding: 20px 0;
+}
+
+.gallery-track {
+    display: flex;
+    width: max-content;
     gap: 20px;
-    padding-bottom: 20px;
-    -ms-overflow-style: none;  /* IE and Edge */
-    scrollbar-width: none;  /* Firefox */
+    /* This controls the speed. Lower = faster, Higher = slower */
+    animation: scrollSlide 25s linear infinite; 
 }
 
-/* Hides the ugly scrollbar for Chrome/Safari */
-.gallery-grid::-webkit-scrollbar {
-    display: none;
+/* Pauses the slider when you hover over it */
+.gallery-track:hover {
+    animation-play-state: paused;
 }
 
-.gallery-grid img {
-    flex: 0 0 80%; /* Shows 80% of the image, hinting there are more to the right */
-    max-width: 600px;
-    height: 400px;
+.gallery-track img {
+    width: 350px; /* Fixed width so you can see multiple images at once */
+    height: 250px;
     object-fit: cover;
     border-radius: 8px;
-    scroll-snap-align: center; /* Snaps image to center */
-    filter: grayscale(80%);
-    transition: filter 0.4s ease;
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
 }
 
-.gallery-grid img:hover {
-    filter: grayscale(0%);
+.gallery-track img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.6);
+}
+
+@keyframes scrollSlide {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        /* Moves it exactly half way (past the original 4 images) to loop seamlessly */
+        transform: translateX(calc(-50% - 10px));
+    }
 }
 
 /* --- CONTACT & FOOTER --- */
@@ -366,5 +371,5 @@ input:focus, textarea:focus {
     .info-bar { position: relative; grid-template-columns: 1fr; }
     .info-item { border-right: none; border-bottom: 1px solid #222; }
     .image-grid, .price-list { grid-template-columns: 1fr; }
-    .gallery-grid img { flex: 0 0 95%; height: 300px; }
+    .gallery-track img { width: 280px; height: 200px; } /* Slightly smaller on phones */
 }
